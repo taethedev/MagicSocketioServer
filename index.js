@@ -8,7 +8,7 @@ const httpServer = createServer(app);
 app.use(cors())
 const io = new Server(httpServer, { 
   cors: {
-    origin: [process.env.CONNECT_FOUR_SOCKET_CLIENT_URL],
+    origin: process.env.CONNECT_FOUR_SOCKET_CLIENT_URL,
     methods: ["GET", "POST"]
   }
  });
