@@ -45,10 +45,15 @@ io.on('connection', (socket) => {
     let opponentTurn = turn === 'first' ? 'second' : 'first';
     socket.broadcast.emit('set-turn', opponentTurn);
   })
-  socket.on('send-message', (msg, room, nextTurn) => {
-    io.to(room).emit('receive-text', msg, nextTurn);
+
+  socket.on('send-handle-drop', (param, room, playerTurn) => {
+    let nextPlayer = playerTurn == 1 ? 2 : 1;
+    io.to(room).emit('receive-handle-drop', param, playerTurn, nextPlayer);
+    console.log('function received and sent')
   })
-  
+  socket.on('restart-game', (winner, room) => {
+    io.to(room).emit('restarting-game', winner);
+  })
 
 });
 io.on('disconnect', (socket) => {
