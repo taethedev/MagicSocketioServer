@@ -52,6 +52,7 @@ io.on('connection', (socket) => {
     console.log('function received and sent')
   })
   socket.on('restart-game', (winner, room) => {
+    console.log(winner)
     io.to(room).emit('restarting-game', winner);
   })
 
