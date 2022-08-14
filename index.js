@@ -27,13 +27,16 @@ io.on('connection', (socket) => {
       socket.join(room);
       cb({ 
         msg:'success',
-        isHost: true
+        isHost: true,
+        playerCount: 1
       });
     } else if (roomSize == 1) {
+      socket.to(room).emit('player-joined', { playerCount: 2})
       socket.join(room);
       cb({ 
         msg:'success',
         isHost: false,
+        playerCount: 2
       });
       io.to(room).emit('game-ready');
     } else {
@@ -55,6 +58,15 @@ io.on('connection', (socket) => {
     console.log(winner)
     io.to(room).emit('restarting-game', winner);
   })
+
+  socket.on("disconnecting", (reason) => {
+    for (const room of socket.rooms) {
+      if (room !== socket.id) {
+        socket.to(room).emit("player-left", {playerCount: 1});
+        console.log(socket.id + ' disconnected');
+      }
+    }
+  });
 
 });
 io.on('disconnect', (socket) => {
