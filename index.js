@@ -8,12 +8,12 @@ const httpServer = createServer(app);
 app.use(cors())
 const io = new Server(httpServer, { 
   cors: {
-    origin: process.env.CONNECT_FOUR_SOCKET_CLIENT_URL,
+    origin: process.env.CONNECT_FOUR_SOCKET_CLIENT_URL || 'http://localhost:3000',
     methods: ["GET", "POST"]
   }
  });
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8080;
 
 io.on('connection', (socket) => {
   console.log(`${socket.id} Connected`);
